@@ -12,13 +12,12 @@ con = get_mysql_connection()
 
 query_ticker = "select distinct ticker from ticker_overview"
 list_ticker = run_sql(con, query_ticker)
-
 today = str(datetime.today().date())
 yesterday = str((datetime.today() - timedelta(days=1)).date())
 today_timestamp = int(datetime.today().timestamp())
 yesterday_timestamp = int((datetime.today() - timedelta(days=1)).timestamp())
 
-for ticker in list(list_ticker['ticker']):
+for ticker in list_ticker['ticker']:
     try:
         intradayURL = f"https://apipubaws.tcbs.com.vn/stock-insight/v1/intraday/{ticker}/his/paging"
         params = {"page": 0, "size": 1}
@@ -47,5 +46,6 @@ for ticker in list(list_ticker['ticker']):
     except Exception as e:
         print(ticker)
         print(e)
+    print(ticker)
 con.close()
 print("DONE!!!")
