@@ -47,7 +47,7 @@ def run_sql(con, query):
 
 def delete_by_ticker(con, table, ticker, date):
     try:
-        query = f"delete from {table} where ticker = '{ticker} and date = '{date}''"
+        query = f"delete from {table} where ticker = '{ticker}' and date = '{date}'"
         dbCursor = con.cursor()
         dbCursor.execute(query)
     except Exception as e:
@@ -66,6 +66,17 @@ def delete_by_date(con, table, date):
 def get_newest_row(con, table, ticker):
     try:
         query = f"select ticker, max(date) from {table} where ticker = '{ticker}'"
+        dbCursor = con.cursor()
+        dbCursor.execute(query)
+        result = dbCursor.fetchall()
+        return pd.DataFrame(result)
+    except Exception as e:
+        print(e)
+    return None
+
+def get_price_before(con, ticker, day):
+    try:
+        query = f"select ticker, max(date) as date, close from vnstock_resources.price_board where date < '{day}' and ticker = '{ticker}'"
         dbCursor = con.cursor()
         dbCursor.execute(query)
         result = dbCursor.fetchall()
