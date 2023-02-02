@@ -25,7 +25,5 @@ for value in list_type:
             run_sql(con, deletedQuery)
             insertQuery = f"insert into market_overview (title, code, value, type, date) values ('{row['title']}', '{row['code']}', {row['value']}, '{row['type']}', '{row['date']}')"
             run_sql(con, insertQuery)
-
 print("DONE!!!")
-    
 con.close()

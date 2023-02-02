@@ -35,7 +35,7 @@ def get_mysql_connection():
         )
     return conn
 
-def run_sql(con, query):
+def get_data_from_mysql(con, query):
     try:
         dbCursor = con.cursor()
         dbCursor.execute(query)
@@ -44,12 +44,18 @@ def run_sql(con, query):
     except Exception as e:
         print(e)
 
+def run_sql(con, query):
+    try:
+        dbCursor = con.cursor()
+        dbCursor.execute(query)
+        con.commit()
+    except Exception as e:
+        print(e)
 
 def delete_by_ticker(con, table, ticker, date):
     try:
         query = f"delete from {table} where ticker = '{ticker}' and date = '{date}'"
-        dbCursor = con.cursor()
-        dbCursor.execute(query)
+        run_sql(con, query)
     except Exception as e:
         print(e)
     return
@@ -57,8 +63,7 @@ def delete_by_ticker(con, table, ticker, date):
 def delete_by_date(con, table, date):
     try:
         query = f"delete from {table} where date = '{date}''"
-        dbCursor = con.cursor()
-        dbCursor.execute(query)
+        run_sql(con, query)
     except Exception as e:
         print(e)
     return
